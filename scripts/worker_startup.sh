@@ -7,13 +7,5 @@ sudo apt update -y
 sudo apt install -y docker.io kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 
-# Initialize the cluster
-sudo kubeadm init --pod-network-cidr=192.168.1.0/16
-
-# Copy the configuration to the home directory
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-# Deploy a network overlay
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+# Join the cluster
+sudo kubeadm join <MASTER_IP>:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
